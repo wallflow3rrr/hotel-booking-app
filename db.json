@@ -27,13 +27,6 @@
   ],
   "bookings": [
     {
-      "id": "1",
-      "roomId": 1,
-      "guestName": "Иван Иванов",
-      "startDate": "2025-04-10",
-      "endDate": "2025-04-15"
-    },
-    {
       "id": "fb8b",
       "roomId": "2",
       "guestName": "Дмитрий",
@@ -50,18 +43,6 @@
       "startDate": "2025-05-08",
       "endDate": "2025-05-09",
       "guests": 1
-    },
-    {
-      "id": "28b1",
-      "roomId": "1",
-      "guestName": "Дмитрий",
-      "email": "khokhryakov2004@gmail.com",
-      "startDate": "2025-05-08",
-      "endDate": "2025-05-09",
-      "guests": 1,
-      "guestAges": [
-        30
-      ]
     }
   ]
 }
