@@ -1,0 +1,67 @@
+{
+  "rooms": [
+    {
+      "id": "1",
+      "title": "Стандартный двухместный",
+      "description": "Уютный двухместный номер с двумя односпальными кроватями.",
+      "price": 100,
+      "availableBeds": 2,
+      "bedType": "twin",
+      "images": [
+        "/images/room1.jpg",
+        "/images/room1-2.jpg"
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Люкс с видом на море",
+      "description": "Просторный люкс с балконом и видом на море.",
+      "price": 300,
+      "availableBeds": 4,
+      "bedType": "double + sofa",
+      "images": [
+        "/images/room2.jpg",
+        "/images/room2-2.jpg"
+      ]
+    }
+  ],
+  "bookings": [
+    {
+      "id": "1",
+      "roomId": 1,
+      "guestName": "Иван Иванов",
+      "startDate": "2025-04-10",
+      "endDate": "2025-04-15"
+    },
+    {
+      "id": "fb8b",
+      "roomId": "2",
+      "guestName": "Дмитрий",
+      "email": "khokhryakov2004@gmail.com",
+      "startDate": "2025-05-08",
+      "endDate": "2025-05-09",
+      "guests": 1
+    },
+    {
+      "id": "9ad2",
+      "roomId": "2",
+      "guestName": "Дмитрий",
+      "email": "khokhryakov2004@gmail.com",
+      "startDate": "2025-05-08",
+      "endDate": "2025-05-09",
+      "guests": 1
+    },
+    {
+      "id": "28b1",
+      "roomId": "1",
+      "guestName": "Дмитрий",
+      "email": "khokhryakov2004@gmail.com",
+      "startDate": "2025-05-08",
+      "endDate": "2025-05-09",
+      "guests": 1,
+      "guestAges": [
+        30
+      ]
+    }
+  ]
+}
