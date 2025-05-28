@@ -42,7 +42,7 @@ const RoomCard: React.FC<Props> = ({ room }) => {
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{room.title}</h5>
         <p className="card-text text-muted" style={{ fontSize: '0.9rem' }}>
-          Мест: {room.availableBeds}, Тип: {getBedTypeLabel(room.bedType)}
+          Мест: {room.available_beds}, Тип: {getBedTypeLabel(room.bed_type)}
         </p>
         <div className="mt-auto">
           <p className="card-text text-success fw-bold">${room.price} / ночь</p>

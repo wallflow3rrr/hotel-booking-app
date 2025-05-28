@@ -7,7 +7,7 @@ const AppNavbar: React.FC = () => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          🏨 Hotel Booking
+          🏨 Бронирование Отеля
         </Link>
         <button
           className="navbar-toggler"
