@@ -9,13 +9,13 @@ interface Props {
   maxGuests?: number;
 }
 
-const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
+const BookingWidget: React.FC<Props> = ({ roomId: room_id, maxGuests = 2 }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [start_date, setStartDate] = useState('');
+  const [end_date, setEndDate] = useState('');
   const [guests, setGuests] = useState(1);
-  const [guestAges, setGuestAges] = useState<number[]>([0]);
+  const [guest_ages, setGuestAges] = useState<number[]>([0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -24,10 +24,10 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    axios.get<Booking[]>(`http://localhost:5001/api/bookings?room_id=${roomId}`)
+    axios.get<Booking[]>(`http://localhost:5001/api/bookings?room_id=${room_id}`)
       .then(res => setBookings(res.data))
       .catch(() => setError('Не удалось загрузить занятые даты'));
-  }, [roomId]);
+  }, [room_id]);
 
   const handleGuestCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const count = parseInt(e.target.value) || 1;
@@ -36,7 +36,7 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
   };
 
   const handleAgeChange = (index: number, value: string) => {
-    const newAges = [...guestAges];
+    const newAges = [...guest_ages];
     newAges[index] = parseInt(value) || 0;
     setGuestAges(newAges);
   };
@@ -52,13 +52,13 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
       return;
     }
 
-    if (!startDate || !endDate) {
+    if (!start_date || !end_date) {
       setError("Выберите даты заезда и выезда");
       return;
     }
 
     const isOverlap = bookings.some(booking =>
-      isDateRangeOverlapping(startDate, endDate, booking.startDate, booking.endDate)
+      isDateRangeOverlapping(start_date, end_date, booking.startDate, booking.endDate)
     );
 
     if (isOverlap) {
@@ -69,13 +69,13 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
     setLoading(true);
 
     const booking = {
-      roomId,
-      guestName: name,
+      room_id,
+      guest_name: name,
       email,
-      startDate,
-      endDate,
+      start_date,
+      end_date,
       guests,
-      guestAges,
+      guest_ages,
     };
 
     try {
@@ -136,7 +136,7 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
             id="startDate"
             type="date"
             className="form-control"
-            value={startDate}
+            value={start_date}
             onChange={(e) => setStartDate(e.target.value)}
             required
           />
@@ -147,7 +147,7 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
             id="endDate"
             type="date"
             className="form-control"
-            value={endDate}
+            value={end_date}
             onChange={(e) => setEndDate(e.target.value)}
             required
           />
@@ -168,7 +168,7 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
         <div className="mb-2">
           <label className="form-label">Возраст каждого гостя</label>
           <div className="d-flex flex-wrap gap-2">
-            {guestAges.map((age, index) => (
+            {guest_ages.map((age, index) => (
               <input
                 key={index}
                 type="number"
