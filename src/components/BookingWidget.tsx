@@ -15,7 +15,7 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [guests, setGuests] = useState(1);
-  const [guestAges, setGuestAges] = useState<number[]>([30]);
+  const [guestAges, setGuestAges] = useState<number[]>([0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -24,7 +24,7 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    axios.get<Booking[]>(`http://localhost:3001/bookings?roomId=${roomId}`)
+    axios.get<Booking[]>(`http://localhost:5001/api/bookings?room_id=${roomId}`)
       .then(res => setBookings(res.data))
       .catch(() => setError('Не удалось загрузить занятые даты'));
   }, [roomId]);
@@ -32,7 +32,7 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
   const handleGuestCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const count = parseInt(e.target.value) || 1;
     setGuests(count);
-    setGuestAges(Array(count).fill(30));
+    setGuestAges(Array(count).fill(0));
   };
 
   const handleAgeChange = (index: number, value: string) => {
@@ -79,7 +79,7 @@ const BookingWidget: React.FC<Props> = ({ roomId, maxGuests = 2 }) => {
     };
 
     try {
-      await axios.post('http://localhost:3001/bookings', booking);
+      await axios.post('http://localhost:5001/api/bookings', booking);
       setSuccess(true);
     } catch (err) {
       setError('Не удалось забронировать номер.');

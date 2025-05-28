@@ -5,8 +5,8 @@ export interface Room {
   title: string;
   description: string;
   price: number;
-  availableBeds: number; // Вместо "available"
-  bedType: string;
+  available_beds: number;
+  bed_type: string;
   images: string[];
 }
 
@@ -15,7 +15,7 @@ export interface Booking {
   roomId: number;
   guestName: string;
   email?: string;
-  startDate: string; // "YYYY-MM-DD"
+  startDate: string; 
   endDate: string;
   guests?: number;
   guestAges?: number[];

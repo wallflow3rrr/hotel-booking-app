@@ -34,7 +34,7 @@ const RoomDetail: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get<Room>(`http://localhost:3001/rooms/${id}`)
+    axios.get<Room>(`http://localhost:5001/api/rooms/${id}`)
       .then(res => {
         setRoom(res.data);
         setLoading(false);
@@ -49,9 +49,8 @@ const RoomDetail: React.FC = () => {
   if (error) return <div className="alert alert-danger">{error}</div>;
   if (!room) return <div>Номер не найден</div>;
 
-  // Пути к изображениям:
   const mainImage = `/images/room${id}.jpg`;
-  const secondImage = `/images/room${id}-1.jpg`; // или -2.jpg — как у тебя в папке
+  const secondImage = `/images/room${id}-1.jpg`;
 
   return (
     <div className="container my-5">
@@ -71,7 +70,7 @@ const RoomDetail: React.FC = () => {
           <h2 className="card-title">{room.title}</h2>
           <p className="card-text lead">{room.description}</p>
           <h5 className="text-success fw-bold">${room.price} / ночь</h5>
-          <p>Мест: {room.availableBeds}, Тип кроватей: {getBedTypeLabel(room.bedType)}</p>
+          <p>Мест: {room.available_beds}, Тип кроватей: {getBedTypeLabel(room.bed_type)}</p>
           <Link to="/" className="btn btn-outline-secondary mt-3 me-2">
             ← Назад к списку
           </Link>
@@ -79,7 +78,7 @@ const RoomDetail: React.FC = () => {
       </div>
 
       {/* Виджет бронирования */}
-      <BookingWidget roomId={room.id} maxGuests={room.availableBeds} />
+      <BookingWidget roomId={room.id} maxGuests={room.available_beds} />
     </div>
   );
 };

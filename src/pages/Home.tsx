@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Room } from '../types';
+import { Booking, Room } from '../types';
 import RoomCard from '../components/RoomCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -11,7 +11,6 @@ const Home: React.FC = () => {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const [searchTerm, setSearchTerm] = useState('');
   const [minPrice, setMinPrice] = useState<number | ''>('');
   const [maxPrice, setMaxPrice] = useState<number | ''>('');
@@ -22,8 +21,8 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     Promise.all([
-      axios.get<Room[]>('http://localhost:3001/rooms'),
-      axios.get<any[]>('http://localhost:3001/bookings')
+      axios.get<Room[]>('http://localhost:5001/api/rooms'),
+      axios.get<Booking[]>('http://localhost:5001/api/bookings')
     ])
       .then(([roomRes, bookingRes]) => {
         setRooms(roomRes.data);
@@ -62,8 +61,8 @@ const Home: React.FC = () => {
     const matchesSearch = room.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesMinPrice = minPrice === '' || room.price >= minPrice;
     const matchesMaxPrice = maxPrice === '' || room.price <= maxPrice;
-    const matchesBeds = beds === '' || room.availableBeds >= beds;
-    const matchesBedType = !bedType || room.bedType.includes(bedType.toLowerCase());
+    const matchesBeds = beds === '' || room.available_beds >= beds;
+    const matchesBedType = !bedType || room.bed_type.includes(bedType.toLowerCase());
 
     return matchesSearch && matchesMinPrice && matchesMaxPrice && matchesBeds && matchesBedType;
   });
