@@ -58,7 +58,7 @@ const BookingWidget: React.FC<Props> = ({ roomId: room_id, maxGuests = 2 }) => {
     }
 
     const isOverlap = bookings.some(booking =>
-      isDateRangeOverlapping(start_date, end_date, booking.startDate, booking.endDate)
+      isDateRangeOverlapping(start_date, end_date, booking.start_date, booking.end_date)
     );
 
     if (isOverlap) {
