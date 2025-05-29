@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -7,21 +8,46 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      const res = await axios.post('http://localhost:5000/api/login', { login, password });
-      document.cookie = `token=${res.data.token}; path=/`;
-      window.location.href = '/admin';
+      await axios.post('http://localhost:5001/api/login', {
+        login,
+        password,
+      }, {
+        withCredentials: true,
+      });
+
+      window.location.href = '/admin/bookings';
     } catch (err) {
-      alert('Ошибка входа');
+      alert('Неверный логин или пароль');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input placeholder="Логин" value={login} onChange={(e) => setLogin(e.target.value)} />
-      <input type="password" placeholder="Пароль" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button type="submit">Войти</button>
-    </form>
+    <div style={{ maxWidth: '400px', margin: 'auto', marginTop: '100px' }}>
+      <form onSubmit={handleSubmit}>
+        <h3 className="mb-4">Вход администратора</h3>
+        <input
+          type="text"
+          placeholder="Логин"
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+          required
+        />
+        <br /><br />
+        <input
+          type="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <br /><br />
+        <button type="submit" className="btn btn-primary w-100">
+          Войти
+        </button>
+      </form>
+    </div>
   );
 };
 
