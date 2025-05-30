@@ -1,10 +1,8 @@
-// src/components/AppNavbar.tsx
 
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const AppNavbar: React.FC = () => {
-  // Проверяем наличие токена в куках
   const token = document.cookie.includes('token=');
 
   return (
