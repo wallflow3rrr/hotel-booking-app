@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const getNewAccessToken = async () => {
   try {
-    const res = await axios.post('http://localhost:5000/api/refresh-token', {}, {
+    const res = await axios.post('http://localhost:5001/api/refresh-token', {}, {
       withCredentials: true
     });
 

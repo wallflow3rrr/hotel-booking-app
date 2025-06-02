@@ -7,7 +7,8 @@ const AdminPanel = () => {
   const [error, setError] = useState<string | null>(null);
 
   function getTokenFromCookie(): string | null {
-    return document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || null;
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    return token || null;
   }
 
   const refreshTokenAndGetNewAccessToken = async (): Promise<string | null> => {
