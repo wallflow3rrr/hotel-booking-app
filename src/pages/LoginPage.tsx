@@ -10,21 +10,17 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:5001/api/login', {
+      await axios.post('http://localhost:5001/api/login', {
         login,
         password,
+      }, {
+        withCredentials: true,
       });
 
-      document.cookie = `token=${res.headers['Set-Cookie']}; path=/`;
-      console.log(res);
-      document.cookie = `refreshToken=${res.headers['Set-Cookie']}; path=/; max-age=604800`; // 7 дней
       window.location.href = '/admin/bookings';
     } catch (err) {
       alert('Неверный логин или пароль');
     }
-
-
-
   };
 
   return (
