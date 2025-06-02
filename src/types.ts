@@ -1,4 +1,3 @@
-// src/types.ts
 
 export interface Room {
   id: number;
@@ -11,12 +10,12 @@ export interface Room {
 }
 
 export interface Booking {
-  id?: number;
-  roomId: number;
-  guestName: string;
-  email?: string;
-  startDate: string; 
-  endDate: string;
-  guests?: number;
-  guestAges?: number[];
+  id: number;
+  room_id: number;
+  guest_name: string;
+  email: string;
+  start_date: string; 
+  end_date: string;
+  guests: number;
+  guest_ages?: number[];
 }

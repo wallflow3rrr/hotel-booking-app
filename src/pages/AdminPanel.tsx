@@ -1,26 +1,117 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-interface Room {
-  id: number;
-  title: string;
-}
+import { Booking } from '../types';
 
 const AdminPanel = () => {
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  function getTokenFromCookie(): string | null {
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    return token || null;
+  }
+
+  const refreshTokenAndGetNewAccessToken = async (): Promise<string | null> => {
+    const refreshToken = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('refreshToken='))?.split('=')[1];
+
+    if (!refreshToken) {
+      window.location.href = '/login';
+      return null;
+    }
+
+    try {
+      const res = await axios.post('http://localhost:5001/api/refresh-token', {}, {
+        headers: {
+          'Authorization': `Bearer ${refreshToken}`,
+        },
+        withCredentials: true,
+      });
+
+      const newAccessToken = res.data.token;
+
+      if (newAccessToken) {
+        document.cookie = `token=${newAccessToken}; path=/`;
+        return newAccessToken;
+      } else {
+        throw new Error('Не удалось обновить токен');
+      }
+    } catch (err) {
+      console.error('Ошибка при обновлении токена:', err);
+      window.location.href = '/login';
+      return null;
+    }
+  };
+
+  const fetchBookings = async (token?: string): Promise<void> => {
+    try {
+      const accessToken = token || getTokenFromCookie();
+
+      if (accessToken === null || accessToken.includes("null") || accessToken.includes("undefined")) {
+        await axios.get("http://localhost:5001/api/refresh-token", {
+          withCredentials: true,
+        });
+      }
+
+      const res = await axios.get('http://localhost:5001/api/bookings', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        withCredentials: true,
+      });
+
+      setBookings(res.data);
+    } catch (err: any) {
+      if (err.response?.status === 403 || err.response?.status === 401) {
+        const newToken = await refreshTokenAndGetNewAccessToken();
+        if (newToken) {
+          const res = await axios.get('http://localhost:5001/api/bookings', {
+            headers: {
+              'Authorization': `Bearer ${newToken}`,
+            },
+            withCredentials: true,
+          });
+          setBookings(res.data);
+        }
+      } else {
+        setError('Не авторизован');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+      }
+    }
+  };
 
   useEffect(() => {
-    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
-    axios.get('http://localhost:5001/api/rooms', {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(res => setRooms(res.data));
+    const loadBookings = async () => {
+      try {
+        await fetchBookings();
+      } catch (err) {
+      }
+    };
+
+    loadBookings();
   }, []);
 
   return (
-    <div>
+    <div className="container my-5">
       <h2>Админ-панель</h2>
+
+      {error && <p className="text-danger">{error}</p>}
+
+      <h4>Созданные пользователями бронирования:</h4>
       <ul>
-        {rooms.map(room => <li key={room.id}>{room.title}</li>)}
+        {bookings.length === 0 ? (
+          <p>Нет бронирований</p>
+        ) : (
+          bookings.map((booking) => (
+            <li key={booking.id}>
+              <strong>{booking.guest_name}</strong> ({booking.email}) — номер ID {booking.room_id},  
+              заезд: {booking.start_date}, выезд: {booking.end_date}, гостей: {booking.guests}
+            </li>
+          ))
+        )}
       </ul>
     </div>
   );
