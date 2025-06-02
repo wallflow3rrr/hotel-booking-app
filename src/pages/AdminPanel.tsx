@@ -48,6 +48,12 @@ const AdminPanel = () => {
     try {
       const accessToken = token || getTokenFromCookie();
 
+      if (accessToken === null || accessToken.includes("null") || accessToken.includes("undefined")) {
+        await axios.get("http://localhost:5001/api/refresh-token", {
+          withCredentials: true,
+        });
+      }
+
       const res = await axios.get('http://localhost:5001/api/bookings', {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
